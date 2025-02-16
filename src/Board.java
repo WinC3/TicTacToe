@@ -19,7 +19,6 @@ public class Board extends JPanel implements MouseListener {
     }
 
     protected void paintComponent(Graphics g) {
-        System.out.println("Painting component");
         super.paintComponent(g);
         g.setColor(Color.BLACK);
         g.drawLine(0, GameWindow.HEIGHT / 3, GameWindow.WIDTH, GameWindow.HEIGHT / 3);
@@ -31,20 +30,22 @@ public class Board extends JPanel implements MouseListener {
             for (int j = 0; j < SIZE; j++) {
                 if (board[i][j] == 'X') {
                     drawX(g, i, j);
-                    System.out.println("Drawing X at " + i + ", " + j);
                 } else if (board[i][j] == 'O') {
                     drawO(g, i, j);
-                    System.out.println("Drawing O at " + i + ", " + j);
                 }
             }
         }
     }
 
     private void drawX(Graphics g, int i, int j) {
-        Point topLeft = new Point(i * GameWindow.WIDTH / SIZE, j * GameWindow.HEIGHT / SIZE);
-        Point topRight = new Point((i + 1) * GameWindow.WIDTH / SIZE, j * GameWindow.HEIGHT / SIZE);
-        Point bottomLeft = new Point(i * GameWindow.WIDTH / SIZE, (j + 1) * GameWindow.HEIGHT / SIZE);
-        Point bottomRight = new Point((i + 1) * GameWindow.WIDTH / SIZE, (j + 1) * GameWindow.HEIGHT / SIZE);
+        Point topLeft = new Point(i * GameWindow.WIDTH / SIZE + (int) (0.1 * GameWindow.WIDTH / SIZE),
+                j * GameWindow.HEIGHT / SIZE + (int) (0.1 * GameWindow.HEIGHT / SIZE));
+        Point topRight = new Point((i + 1) * GameWindow.WIDTH / SIZE - (int) (0.1 * GameWindow.WIDTH / SIZE),
+                j * GameWindow.HEIGHT / SIZE + (int) (0.1 * GameWindow.HEIGHT / SIZE));
+        Point bottomLeft = new Point(i * GameWindow.WIDTH / SIZE + (int) (0.1 * GameWindow.WIDTH / SIZE),
+                (j + 1) * GameWindow.HEIGHT / SIZE - (int) (0.1 * GameWindow.HEIGHT / SIZE));
+        Point bottomRight = new Point((i + 1) * GameWindow.WIDTH / SIZE - (int) (0.1 * GameWindow.WIDTH / SIZE),
+                (j + 1) * GameWindow.HEIGHT / SIZE - (int) (0.1 * GameWindow.HEIGHT / SIZE));
 
         g.drawLine(topLeft.x, topLeft.y, bottomRight.x, bottomRight.y);
         g.drawLine(topRight.x, topRight.y, bottomLeft.x, bottomLeft.y);
@@ -70,9 +71,30 @@ public class Board extends JPanel implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        System.out.println("Mouse clicked");
         makeTurn(e.getX(), e.getY());
         repaint();
+        if (checkWin() != '\0') {
+            System.out.println(checkWin() + " wins!");
+
+        }
+    }
+
+    public char checkWin() {
+        for (int i = 0; i < SIZE; i++) {
+            if (board[i][0] == board[i][1] && board[i][1] == board[i][2] && board[i][0] != '\0') {
+                return board[i][0];
+            }
+            if (board[0][i] == board[1][i] && board[1][i] == board[2][i] && board[0][i] != '\0') {
+                return board[0][i];
+            }
+        }
+        if (board[0][0] == board[1][1] && board[1][1] == board[2][2] && board[0][0] != '\0') {
+            return board[0][0];
+        }
+        if (board[0][2] == board[1][1] && board[1][1] == board[2][0] && board[0][2] != '\0') {
+            return board[0][2];
+        }
+        return '\0';
     }
 
     @Override
