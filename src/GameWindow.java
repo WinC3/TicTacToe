@@ -1,7 +1,6 @@
 package src;
 
 import javax.swing.JFrame;
-import javax.swing.border.Border;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
