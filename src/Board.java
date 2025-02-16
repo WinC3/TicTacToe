@@ -16,6 +16,7 @@ public class Board extends JPanel implements MouseListener {
         board = new char[SIZE][SIZE];
         currentPlayer = 'X';
         addMouseListener(this);
+        setPreferredSize(new Dimension(GameWindow.WIDTH, GameWindow.HEIGHT));
     }
 
     protected void paintComponent(Graphics g) {
@@ -77,6 +78,10 @@ public class Board extends JPanel implements MouseListener {
             System.out.println(checkWin() + " wins!");
 
         }
+    }
+
+    public char getCurrentPlayer() {
+        return currentPlayer;
     }
 
     public char checkWin() {
